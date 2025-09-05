@@ -9,4 +9,12 @@ class Tweet extends Model
 {
     /** @use HasFactory<\Database\Factories\TweetFactory> */
     use HasFactory;
+
+    //ˆê‘Î‘½‚Ì˜AŒg‚ÌÝ’è@Ž©•ª‚ª‘½
+    protected $fillable = ['tweet'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
