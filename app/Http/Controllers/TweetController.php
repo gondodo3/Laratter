@@ -48,7 +48,10 @@ class TweetController extends Controller
      */
     public function show(Tweet $tweet)
     {
-        //
+        //動作確認
+        //dd($tweet);
+
+        return view('tweets.show', compact('tweet'));
     }
 
     /**
