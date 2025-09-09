@@ -10,7 +10,7 @@ class Tweet extends Model
     /** @use HasFactory<\Database\Factories\TweetFactory> */
     use HasFactory;
 
-    //ˆê‘Î‘½‚Ì˜AŒg‚Ìİ’è@©•ª‚ª‘½
+    //ä¸€å¯¾å¤šã®é€£æºã®è¨­å®šã€€è‡ªåˆ†ãŒå¤š
     protected $fillable = ['tweet'];
 
     public function user()
