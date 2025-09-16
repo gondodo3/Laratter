@@ -50,7 +50,7 @@ class TweetController extends Controller
     {
         //動作確認
         //dd($tweet);
-
+        $tweet->load('comments');
         return view('tweets.show', compact('tweet'));
     }
 
