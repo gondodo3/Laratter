@@ -45,25 +45,31 @@
           </div>
 
           @foreach ($tweets as $tweet)
-          <div class="mb-4 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
-            <p class="text-gray-800 dark:text-gray-300">{{ $tweet->tweet }}</p>
-            <a href="{{ route('profile.show', $tweet->user) }}">
-              <p class="text-gray-600 dark:text-gray-400 text-sm">投稿者: {{ $tweet->user->name }}</p>
-            </a>
-            <a href="{{ route('tweets.show', $tweet) }}" class="text-blue-500 hover:text-blue-700">詳細を見る</a>
-            <div class="flex">
-              @if ($tweet->liked->contains(auth()->id()))
-              <form action="{{ route('tweets.dislike', $tweet) }}" method="POST">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="text-red-500 hover:text-red-700">dislike {{ $tweet->liked->count() }}</button>
-              </form>
-              @else
-              <form action="{{ route('tweets.like', $tweet) }}" method="POST">
-                @csrf
-                <button type="submit" class="text-blue-500 hover:text-blue-700">like {{ $tweet->liked->count() }}</button>
-              </form>
-              @endif
+          <div class="mb-4 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center">
+            @php
+                $iconFile = $tweet->user->icon ? $tweet->user->icon : 'default_icon.png';
+            @endphp
+            <img src="{{ asset('images/' . $iconFile) }}" alt="ユーザーアイコン" width="32" class="rounded-full mr-2" style="object-fit:cover; background:#fff;">
+            <div>
+              <p class="text-gray-800 dark:text-gray-300">{{ $tweet->tweet }}</p>
+              <a href="{{ route('profile.show', $tweet->user) }}">
+                <p class="text-gray-600 dark:text-gray-400 text-sm">投稿者: {{ $tweet->user->name }}</p>
+              </a>
+              <a href="{{ route('tweets.show', $tweet) }}" class="text-blue-500 hover:text-blue-700">詳細を見る</a>
+              <div class="flex">
+                @if ($tweet->liked->contains(auth()->id()))
+                <form action="{{ route('tweets.dislike', $tweet) }}" method="POST">
+                  @csrf
+                  @method('DELETE')
+                  <button type="submit" class="text-red-500 hover:text-red-700">dislike {{ $tweet->liked->count() }}</button>
+                </form>
+                @else
+                <form action="{{ route('tweets.like', $tweet) }}" method="POST">
+                  @csrf
+                  <button type="submit" class="text-blue-500 hover:text-blue-700">like {{ $tweet->liked->count() }}</button>
+                </form>
+                @endif
+              </div>
             </div>
           </div>
           @endforeach
@@ -77,6 +83,11 @@
           <p>No tweets found.</p>
           @endif
 
+          <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
+            @csrf
+            @method('PATCH')
+            <!-- フォーム内容 -->
+          </form>
         </div>
       </div>
     </div>

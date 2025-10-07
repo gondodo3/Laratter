@@ -18,7 +18,7 @@ class ProfileController extends Controller
      */
     public function show(User $user)
     {
-        if (auth()->user()->is($user)) {
+        if (Auth::user()->is($user)) {
             $tweets = Tweet::query()
                 ->where('user_id', $user->id)  // 自分のツイート
                 ->orWhereIn('user_id', $user->follows->pluck('id')) // フォローしているユーザーのツイート
@@ -41,27 +41,26 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
-    public function edit(Request $request): View
+    public function edit(Request $request)
     {
+        $imageFiles = array_filter(scandir(public_path('images')), function($file) {
+            return !in_array($file, ['.', '..']);
+        });
         return view('profile.edit', [
             'user' => $request->user(),
+            'imageFiles' => $imageFiles,
         ]);
     }
 
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(Request $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
-
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
-
-        $request->user()->save();
-
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        $user = $request->user();
+        $user->icon = $request->input('icon'); // ファイル名を保存
+        $user->save();
+        return redirect()->route('profile.edit')->with('status', 'profile-updated');
     }
 
     /**

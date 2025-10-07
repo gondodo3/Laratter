@@ -24,6 +24,27 @@
                     @include('profile.partials.delete-user-form')
                 </div>
             </div>
+
+            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                <form method="POST" action="{{ route('profile.update') }}">
+                    @csrf
+                    @method('PATCH')
+
+                    <div>
+                        <label>アイコン画像を選択</label>
+                        <div style="display: flex; gap: 10px;">
+                            @foreach($imageFiles as $file)
+                                <label>
+                                    <input type="radio" name="icon" value="{{ $file }}" {{ (old('icon', $user->icon) == $file) ? 'checked' : '' }}>
+                                    <img src="{{ asset('images/' . $file) }}" width="48" class="rounded-full" style="background:#fff;">
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <button type="submit">更新</button>
+                </form>
+            </div>
         </div>
     </div>
 </x-app-layout>
